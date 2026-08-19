@@ -1,16 +1,27 @@
 ---
 import { Font } from 'astro:assets';
 import { AUTHOR } from '../config/site';
+import {
+  alternateLinks,
+  getTranslations,
+  type Lang,
+  ogLocale,
+} from '../i18n/utils';
 import '../styles/global.css';
 
 interface Props {
-  lang: string;
-  title: string;
-  description: string;
+  lang: Lang;
+  title?: string;
+  description?: string;
 }
 
 const { lang, title, description } = Astro.props;
+const t = getTranslations(lang);
+
+const pageTitle = title ?? t('meta.title');
+const pageDescription = description ?? t('meta.description');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const alternates = alternateLinks(Astro.url, Astro.site);
 ---
 
 <!doctype html>
@@ -21,16 +32,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="canonical" href={canonical} />
+    {
+      alternates.map(({ hreflang, href }) => (
+        <link rel="alternate" hreflang={hreflang} href={href} />
+      ))
+    }
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
     <meta name="author" content={AUTHOR.name} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={AUTHOR.name} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale[lang]} />
     <meta name="twitter:card" content="summary_large_image" />
 
     {/* The theme must be resolved before the first paint, otherwise an
@@ -62,7 +79,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       href="#main"
       class="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-100 focus-visible:rounded-(--radius-control) focus-visible:bg-accent focus-visible:px-4 focus-visible:py-2 focus-visible:text-sm focus-visible:font-semibold focus-visible:text-on-accent"
     >
-      {lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}
+      {t('a11y.skip')}
     </a>
 
     <slot />

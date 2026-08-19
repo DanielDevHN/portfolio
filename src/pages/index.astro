@@ -1,20 +1,5 @@
 ---
-import { AUTHOR } from '../config/site';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Home from '../components/Home.astro';
 ---
 
-<BaseLayout
-  lang="es"
-  title={`${AUTHOR.name} — ${AUTHOR.role}`}
-  description="Automatizo procesos críticos con agentes de IA y construyo el software que los sostiene."
->
-  <main id="main" class="rail py-24">
-    <p class="eyebrow text-accent">Sistema de diseño listo</p>
-    <h1 class="mt-4 text-5xl tracking-[-0.035em]">
-      Convierto procesos manuales en <span class="text-accent">agentes de IA</span>
-    </h1>
-    <p class="mt-6 max-w-[60ch] text-ink-muted">
-      Las secciones se construyen en las siguientes ramas.
-    </p>
-  </main>
-</BaseLayout>
+<Home lang="es" />
