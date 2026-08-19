@@ -1,0 +1,117 @@
+# Services offered on the site.
+#
+# To add a service, append an entry with a unique `id`. Both `es` and `en`
+# are required; the build fails if one is missing.
+#
+# `icon` is a Lucide icon name: https://lucide.dev/icons
+# `highlight: true` marks the AI-focused cards that lead the grid.
+
+- id: ai-agents
+  order: 1
+  icon: sparkles
+  highlight: true
+  chips: [OpenAI, n8n, TypeScript]
+  es:
+    badge: IA
+    title: Agentes de IA a medida
+    description: >-
+      Agentes que leen tus datos, deciden y ejecutan acciones reales: abrir
+      tickets, actualizar el CRM, responder al cliente. Nodos personalizados
+      de n8n escritos en TypeScript, no plantillas genéricas.
+  en:
+    badge: AI
+    title: Custom AI agents
+    description: >-
+      Agents that read your data, decide, and take real actions: open tickets,
+      update the CRM, answer the customer. Custom n8n nodes written in
+      TypeScript, not generic templates.
+
+- id: semantic-search
+  order: 2
+  icon: database
+  highlight: true
+  chips: [Embeddings, pgvector, Cosine]
+  es:
+    badge: RAG
+    title: Búsqueda semántica y RAG
+    description: >-
+      Tus manuales, contratos y catálogos convertidos en conocimiento
+      consultable. Embeddings sobre PostgreSQL y MongoDB Vector Search con
+      similitud coseno: el modelo responde con tus datos, no inventa.
+  en:
+    badge: RAG
+    title: Semantic search and RAG
+    description: >-
+      Your manuals, contracts and catalogs turned into searchable knowledge.
+      Embeddings on PostgreSQL and MongoDB Vector Search with cosine
+      similarity: the model answers from your data instead of making things up.
+
+- id: whatsapp-chatbots
+  order: 3
+  icon: message-circle
+  highlight: true
+  chips: [Builderbot, Node.js, n8n]
+  es:
+    badge: BOT
+    title: Chatbots de WhatsApp
+    description: >-
+      Atención y ventas que no duermen. Builderbot sobre Node.js conectado al
+      agente de IA y a tus sistemas mediante n8n, con traspaso a un humano
+      cuando la conversación lo pide.
+  en:
+    badge: BOT
+    title: WhatsApp chatbots
+    description: >-
+      Support and sales that never sleep. Builderbot on Node.js wired to the
+      AI agent and your systems through n8n, with handoff to a human when the
+      conversation calls for it.
+
+- id: enterprise-frontend
+  order: 4
+  icon: layout-grid
+  chips: [Angular, NgRx, Nx]
+  es:
+    title: Frontend enterprise
+    description: >-
+      Aplicaciones grandes que siguen siendo mantenibles al tercer año:
+      monorepo con Nx, estado predecible con NgRx, librerías compartidas y
+      límites de dependencia que el equipo puede respetar.
+  en:
+    title: Enterprise frontend
+    description: >-
+      Large applications that are still maintainable in year three: Nx
+      monorepo, predictable state with NgRx, shared libraries, and dependency
+      boundaries the team can actually respect.
+
+- id: apis-backend
+  order: 5
+  icon: server
+  chips: [Nest.js, .NET Core, PostgreSQL]
+  es:
+    title: APIs y backend
+    description: >-
+      Servicios que aguantan tráfico y auditoría: Nest.js y .NET Core,
+      modelado de datos en SQL Server, PostgreSQL o MongoDB, e integraciones
+      con pasarelas de pago y sistemas heredados.
+  en:
+    title: APIs and backend
+    description: >-
+      Services that survive both traffic and audits: Nest.js and .NET Core,
+      data modeling in SQL Server, PostgreSQL or MongoDB, and integrations
+      with payment gateways and legacy systems.
+
+- id: mobile-apps
+  order: 6
+  icon: smartphone
+  chips: [Flutter, React Native]
+  es:
+    title: Apps móviles
+    description: >-
+      Aplicaciones de campo para vendedores y operaciones: Flutter y React
+      Native, trabajo sin conexión, sincronización de datos maestros y pagos
+      electrónicos integrados.
+  en:
+    title: Mobile apps
+    description: >-
+      Field apps for sales reps and operations: Flutter and React Native,
+      offline work, master-data sync, and built-in electronic payments.

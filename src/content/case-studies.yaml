@@ -1,0 +1,59 @@
+# Case studies. Keep each description to what the confidentiality agreement
+# with the client allows; the section header already says so out loud.
+
+- id: whatsapp-catalog-agent
+  order: 1
+  icon: message-circle
+  organization: Albatros Services
+  es:
+    title: Atención por WhatsApp con un agente que sí conoce el catálogo
+    description: >-
+      Un bot de Builderbot conectado a un agente de OpenAI y a un índice
+      vectorial sobre PostgreSQL: las respuestas salen del catálogo real del
+      cliente, con orquestación en n8n para escalar a un asesor humano.
+    tech: Node.js · OpenAI · n8n · pgvector
+  en:
+    title: WhatsApp support from an agent that actually knows the catalog
+    description: >-
+      A Builderbot bot wired to an OpenAI agent and a vector index on
+      PostgreSQL: answers come from the client's real catalog, with n8n
+      orchestration to escalate to a human advisor.
+    tech: Node.js · OpenAI · n8n · pgvector
+
+- id: mobile-payments
+  order: 2
+  icon: credit-card
+  organization: Grupo Corinsa · EMSULA
+  es:
+    title: Pagos electrónicos dentro de la app móvil de ventas
+    description: >-
+      Integré el cobro electrónico directamente en la aplicación core que usa
+      la fuerza de ventas, cerrando el ciclo de venta en campo sin depender de
+      un proceso manual posterior.
+    tech: .NET Core · React Native · Pasarela de pago
+  en:
+    title: Electronic payments inside the mobile sales app
+    description: >-
+      I integrated electronic collection directly into the core app the sales
+      force uses, closing the sale in the field instead of relying on a manual
+      back-office step.
+    tech: .NET Core · React Native · Payment gateway
+
+- id: master-data-apps
+  order: 3
+  icon: refresh-cw
+  organization: Grupo Corinsa · EMSULA
+  es:
+    title: Reconstrucción de dos apps de datos maestros
+    description: >-
+      Dos aplicaciones React Native rehechas desde su arquitectura para la
+      gestión de datos maestros de clientes: navegación coherente, validaciones
+      al capturar y sincronización confiable con el backend.
+    tech: React Native · .NET · Datos maestros
+  en:
+    title: Rebuilding two master-data apps
+    description: >-
+      Two React Native applications rebuilt from their architecture up for
+      customer master-data management: coherent navigation, validation at
+      capture time, and reliable backend sync.
+    tech: React Native · .NET · Master data
