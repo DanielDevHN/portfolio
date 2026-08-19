@@ -1,0 +1,56 @@
+---
+import {
+  getTranslations,
+  type Lang,
+  languages,
+  locales,
+  switchLangPath,
+} from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  class?: string;
+}
+
+const { lang, class: className } = Astro.props;
+const t = getTranslations(lang);
+
+// Real links to real URLs: the switch is a navigation, not a client-side
+// toggle, so both languages stay crawlable and shareable.
+const options = locales.map((locale) => ({
+  locale,
+  label: locale.toUpperCase(),
+  name: languages[locale],
+  href: switchLangPath(Astro.url, locale),
+  current: locale === lang,
+}));
+---
+
+<div
+  role="group"
+  aria-label={t('a11y.language')}
+  class:list={[
+    'flex overflow-hidden rounded-(--radius-control) border border-line bg-surface',
+    className,
+  ]}
+>
+  {
+    options.map(({ locale, label, name, href, current }) => (
+      <a
+        href={href}
+        hreflang={locale}
+        lang={locale}
+        aria-current={current ? 'true' : undefined}
+        title={name}
+        class:list={[
+          'px-2.5 py-1.5 font-mono text-[0.6875rem] font-bold tracking-wider transition-colors',
+          current
+            ? 'bg-ink text-canvas'
+            : 'text-ink-faint hover:text-ink',
+        ]}
+      >
+        {label}
+      </a>
+    ))
+  }
+</div>

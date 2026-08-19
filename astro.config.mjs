@@ -11,7 +11,27 @@ import { SITE_URL } from './src/config/site.ts';
 export default defineConfig({
   site: SITE_URL,
 
-  integrations: [react(), icon({ include: { lucide: ['*'] } }), sitemap()],
+  // Spanish is served from the root and English from /en/, so both languages
+  // get real, indexable URLs instead of a client-side toggle.
+  i18n: {
+    locales: ['es', 'en'],
+    defaultLocale: 'es',
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: false,
+    },
+  },
+
+  integrations: [
+    react(),
+    icon({ include: { lucide: ['*'] } }),
+    sitemap({
+      i18n: {
+        defaultLocale: 'es',
+        locales: { es: 'es-HN', en: 'en-US' },
+      },
+    }),
+  ],
 
   // Self-hosted and subsetted by Astro: no third-party request, no layout shift.
   fonts: [

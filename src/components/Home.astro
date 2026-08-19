@@ -1,0 +1,40 @@
+---
+import type { Lang } from '../i18n/utils';
+import { getTranslations } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LangSwitch from './ui/LangSwitch.astro';
+import ThemeToggle from './ui/ThemeToggle.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<BaseLayout lang={lang}>
+  <header
+    class="sticky top-0 z-50 border-b border-line-soft bg-canvas/80 backdrop-blur-md"
+  >
+    <div class="rail flex h-[4.125rem] items-center gap-4">
+      <a href={lang === 'es' ? '/' : '/en/'} class="font-display font-bold">
+        Daniel Reyes
+      </a>
+      <div class="ml-auto flex items-center gap-2.5">
+        <LangSwitch lang={lang} />
+        <ThemeToggle lang={lang} />
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="rail py-24">
+    <p class="eyebrow text-accent">{t('services.eyebrow')}</p>
+    <h1 class="mt-4 text-5xl tracking-[-0.035em]">
+      {t('hero.headline.1')}{' '}
+      {t('hero.headline.2')}{' '}
+      <span class="text-accent">{t('hero.headline.3')}</span>
+    </h1>
+    <p class="mt-6 max-w-[60ch] text-ink-muted">{t('hero.lead')}</p>
+  </main>
+</BaseLayout>
