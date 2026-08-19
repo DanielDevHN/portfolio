@@ -1,1 +1,232 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Theme tokens
+
+   Every colour exists under one name in both themes. Components only ever
+   reference the token, so switching themes touches no component.
+
+   Three viewer states are covered:
+     1. no stamp on <html>  -> prefers-color-scheme decides
+     2. data-theme="dark"   -> explicit dark, beats a light OS
+     3. data-theme="light"  -> explicit light, beats a dark OS
+   ========================================================================== */
+
+:root {
+  --canvas: #f0f2f6;
+  --canvas-deep: #e4e9f1;
+  --surface: #ffffff;
+  --surface-muted: #e9edf4;
+  --node: #ffffff;
+  --line: #d2dae6;
+  --line-soft: #e1e7f0;
+  --ink: #131a26;
+  --ink-muted: #59657a;
+  --ink-faint: #8894a8;
+  --accent: #dc4f17;
+  --accent-strong: #f1682f;
+  --accent-wash: #dc4f171a;
+  --flow: #0c8079;
+  --flow-wash: #0c80791f;
+  --on-accent: #ffffff;
+  --shadow-card: 0 1px 2px #131a260d, 0 12px 32px -12px #131a2629;
+  --shadow-raised: 0 2px 4px #131a2610, 0 32px 64px -24px #131a2638;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --canvas: #0c111b;
+    --canvas-deep: #080c14;
+    --surface: #131a28;
+    --surface-muted: #1a2333;
+    --node: #151d2c;
+    --line: #273245;
+    --line-soft: #1f2939;
+    --ink: #e9edf4;
+    --ink-muted: #9aa7bb;
+    --ink-faint: #6c7a90;
+    --accent: #ff7a3d;
+    --accent-strong: #ff9257;
+    --accent-wash: #ff7a3d1f;
+    --flow: #46d6cb;
+    --flow-wash: #46d6cb1f;
+    --shadow-card: 0 1px 2px #00000066, 0 12px 32px -12px #00000099;
+    --shadow-raised: 0 2px 4px #00000080, 0 32px 64px -24px #000000bf;
+  }
+}
+
+:root[data-theme='dark'] {
+  --canvas: #0c111b;
+  --canvas-deep: #080c14;
+  --surface: #131a28;
+  --surface-muted: #1a2333;
+  --node: #151d2c;
+  --line: #273245;
+  --line-soft: #1f2939;
+  --ink: #e9edf4;
+  --ink-muted: #9aa7bb;
+  --ink-faint: #6c7a90;
+  --accent: #ff7a3d;
+  --accent-strong: #ff9257;
+  --accent-wash: #ff7a3d1f;
+  --flow: #46d6cb;
+  --flow-wash: #46d6cb1f;
+  --shadow-card: 0 1px 2px #00000066, 0 12px 32px -12px #00000099;
+  --shadow-raised: 0 2px 4px #00000080, 0 32px 64px -24px #000000bf;
+}
+
+/* ==========================================================================
+   Tailwind theme
+
+   Utilities resolve through the runtime variables above, so `bg-canvas` and
+   `text-ink` are automatically theme-aware.
+   ========================================================================== */
+
+@theme {
+  --color-canvas: var(--canvas);
+  --color-canvas-deep: var(--canvas-deep);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-node: var(--node);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-wash: var(--accent-wash);
+  --color-flow: var(--flow);
+  --color-flow-wash: var(--flow-wash);
+  --color-on-accent: var(--on-accent);
+
+  --font-display: var(--font-bricolage);
+  --font-sans: var(--font-plex);
+  --font-mono: var(--font-jetbrains);
+
+  --radius-token: 6px;
+  --radius-control: 10px;
+  --radius-card: 16px;
+
+  --shadow-card: var(--shadow-card);
+  --shadow-raised: var(--shadow-raised);
+
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor targets so the sticky header never covers a heading. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Colour transition on theme change. Deliberately excludes transform so it
+     never fights the hover and reveal animations. */
+  :where(body, header, section, footer, a, button, input, textarea, select) {
+    transition:
+      background-color 180ms var(--ease-out-soft),
+      border-color 180ms var(--ease-out-soft),
+      color 180ms var(--ease-out-soft);
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+@utility rail {
+  width: min(1160px, 92vw);
+  margin-inline: auto;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Blueprint grid used behind the hero. */
+@utility grid-backdrop {
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(72% 62% at 50% 34%, #000, transparent 100%);
+}
+
+/* ==========================================================================
+   Motion
+
+   Section entrances are progressive enhancement: the `reveal` class only
+   hides content once the observer script confirms JavaScript is running.
+   ========================================================================== */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms var(--ease-out-soft),
+    transform 700ms var(--ease-out-soft);
+}
+
+.js .reveal[data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

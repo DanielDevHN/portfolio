@@ -1,0 +1,76 @@
+---
+import { Font } from 'astro:assets';
+import { AUTHOR } from '../config/site';
+import '../styles/global.css';
+
+interface Props {
+  lang: string;
+  title: string;
+  description: string;
+}
+
+const { lang, title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={AUTHOR.name} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={AUTHOR.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {/* The theme must be resolved before the first paint, otherwise an
+        explicitly chosen dark theme flashes white on load. */}
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add('js');
+        try {
+          const stored = localStorage.getItem('theme');
+          if (stored === 'dark' || stored === 'light') {
+            root.dataset.theme = stored;
+          }
+        } catch {
+          /* Storage can be unavailable in private mode; the OS theme wins. */
+        }
+      })();
+    </script>
+
+    <Font cssVariable="--font-bricolage" preload />
+    <Font cssVariable="--font-plex" preload />
+    <Font cssVariable="--font-jetbrains" />
+
+    <slot name="head" />
+  </head>
+
+  <body class="bg-canvas text-ink">
+    <a
+      href="#main"
+      class="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-4 focus-visible:left-4 focus-visible:z-100 focus-visible:rounded-(--radius-control) focus-visible:bg-accent focus-visible:px-4 focus-visible:py-2 focus-visible:text-sm focus-visible:font-semibold focus-visible:text-on-accent"
+    >
+      {lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}
+    </a>
+
+    <slot />
+
+    <script>
+      import { initReveal } from '../scripts/reveal';
+
+      initReveal();
+    </script>
+  </body>
+</html>
