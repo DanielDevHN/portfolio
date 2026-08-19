@@ -1,0 +1,39 @@
+# Education, newest first.
+#
+# For studies still under way, set `inProgress: true` and give the expected
+# `endYear`. The card then reads "En curso · 2027" instead of a year range,
+# and the date renders in the accent colour so what is active is legible at a
+# glance. Completed studies also need a `startYear`.
+
+- id: msc-artificial-intelligence
+  order: 1
+  endYear: 2027
+  inProgress: true
+  es:
+    degree: Maestría en Inteligencia Artificial
+    institution: UNIR · Universidad Internacional de La Rioja, España
+  en:
+    degree: MSc in Artificial Intelligence
+    institution: UNIR · International University of La Rioja, Spain
+
+- id: msc-it-management
+  order: 2
+  endYear: 2028
+  inProgress: true
+  es:
+    degree: Maestría en Gestión de TI
+    institution: UNITEC · San Pedro Sula, Honduras
+  en:
+    degree: MSc in IT Management
+    institution: UNITEC · San Pedro Sula, Honduras
+
+- id: bsc-computer-engineering
+  order: 3
+  startYear: 2020
+  endYear: 2025
+  es:
+    degree: Ingeniería en Informática
+    institution: Ceutec / Unitec · San Pedro Sula, Honduras
+  en:
+    degree: BSc in Computer Engineering
+    institution: Ceutec / Unitec · San Pedro Sula, Honduras

@@ -1,0 +1,90 @@
+# Professional experience, newest first (`order: 1` renders at the top).
+#
+# Omit `endYear` and set `current: true` for the role you hold today; the
+# timeline then renders "2025 — actual" / "2025 — present" and highlights the
+# marker in the accent colour.
+
+- id: la-cumbre
+  order: 1
+  company: Corporación La Cumbre
+  startYear: 2025
+  current: true
+  es:
+    role: Senior Software Developer
+    bullets:
+      - >-
+        Diseño y desarrollo de workflows con nodos personalizados en n8n + IA,
+        integrando Node.js y TypeScript para automatizar procesos críticos del
+        negocio.
+      - >-
+        Desarrollo de aplicaciones large enterprise bajo un enfoque monorepo
+        con Angular, NgRx y Nx.
+  en:
+    role: Senior Software Developer
+    bullets:
+      - >-
+        Design and development of workflows with custom n8n nodes + AI,
+        integrating Node.js and TypeScript to automate business-critical
+        processes.
+      - >-
+        Development of large enterprise applications in a monorepo setup with
+        Angular, NgRx and Nx.
+
+- id: albatros-services
+  order: 2
+  company: Albatros Services
+  startYear: 2024
+  endYear: 2025
+  es:
+    role: Software Developer Fullstack
+    bullets:
+      - >-
+        Desarrollo de agentes de IA con OpenAI y n8n, integrados vía API con
+        Node.js.
+      - >-
+        Embedding de bases de datos PostgreSQL y MongoDB Vector Search usando
+        similitud coseno.
+      - >-
+        Chatbots de WhatsApp con Node.js y Builderbot, conectando el agente de
+        IA con OpenAI y n8n.
+  en:
+    role: Fullstack Software Developer
+    bullets:
+      - >-
+        Built AI agents with OpenAI and n8n, integrated over API with Node.js.
+      - >-
+        Embedded PostgreSQL and MongoDB Vector Search databases using cosine
+        similarity.
+      - >-
+        WhatsApp chatbots with Node.js and Builderbot, connecting the AI agent
+        to OpenAI and n8n.
+
+- id: grupo-corinsa
+  order: 3
+  company: Grupo Corinsa · EMSULA
+  startYear: 2022
+  endYear: 2024
+  es:
+    role: Software Developer
+    bullets:
+      - >-
+        Diseño, desarrollo y mantenimiento de servicios web y aplicaciones web,
+        móviles y de escritorio con ASP.NET Core, React Native, Flutter y
+        WinForms.
+      - >-
+        Integración de pagos electrónicos en la aplicación móvil core de ventas.
+      - >-
+        Reconstrucción de dos aplicaciones móviles en React Native para la
+        gestión de datos maestros de clientes.
+  en:
+    role: Software Developer
+    bullets:
+      - >-
+        Design, development and maintenance of web services and web, mobile and
+        desktop applications with ASP.NET Core, React Native, Flutter and
+        WinForms.
+      - >-
+        Integrated electronic payments into the core mobile sales application.
+      - >-
+        Rebuilt two React Native mobile applications for customer master-data
+        management.
