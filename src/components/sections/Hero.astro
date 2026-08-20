@@ -25,7 +25,7 @@ const stats = [
   <div class="rail grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
     <div class="reveal">
       <p
-        class="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 pr-3.5 pl-2.5 shadow-(--shadow-card)"
+        class="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 pr-3.5 pl-2.5 shadow-card"
       >
         <span class="size-[7px] shrink-0 rounded-full bg-flow"></span>
         <span class="eyebrow text-ink-muted">{t('hero.status')}</span>
@@ -46,21 +46,21 @@ const stats = [
       <div class="mt-8 flex flex-wrap gap-3">
         <a
           href="#services"
-          class="inline-flex items-center gap-2 rounded-(--radius-control) bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+          class="inline-flex items-center gap-2 rounded-control bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong"
         >
           {t('hero.cta.primary')}
           <Icon name="lucide:arrow-right" class="size-4" />
         </a>
         <a
           href="#experience"
-          class="inline-flex items-center rounded-(--radius-control) border border-line bg-surface px-5 py-3 font-semibold text-ink transition-colors hover:border-ink-faint"
+          class="inline-flex items-center rounded-control border border-line bg-surface px-5 py-3 font-semibold text-ink transition-colors hover:border-ink-faint"
         >
           {t('hero.cta.secondary')}
         </a>
       </div>
 
       <dl
-        class="mt-10 grid gap-px overflow-hidden rounded-(--radius-control) border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
+        class="mt-10 grid gap-px overflow-hidden rounded-control border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
       >
         {
           stats.map(({ value, label }) => (

@@ -26,7 +26,7 @@ const cases = await getCaseStudies(lang);
       {
         cases.map(({ id, icon, organization, title, description, tech }) => (
           <li
-            class="reveal flex flex-col overflow-hidden rounded-(--radius-card) border border-line bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-ink-faint hover:shadow-(--shadow-raised)"
+            class="reveal flex flex-col overflow-hidden rounded-card border border-line bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-ink-faint hover:shadow-raised"
             data-case={id}
           >
             <div class="case-band flex items-center border-b border-line-soft px-6 py-6">

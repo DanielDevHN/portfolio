@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { AUTHOR, SOCIAL_LINKS } from '../../config/site';
+import { AUTHOR, CONTACT_FORM_ENDPOINT, SOCIAL_LINKS } from '../../config/site';
 import { getTranslations, type Lang } from '../../i18n/utils';
 
 interface Props {
@@ -46,7 +46,7 @@ const topics = [
 ];
 
 const fieldClass =
-  'w-full rounded-(--radius-control) border border-line bg-canvas px-3.5 py-2.5 text-[0.92rem] text-ink transition-[border-color,box-shadow] placeholder:text-ink-faint focus:border-accent focus:ring-3 focus:ring-accent-wash focus:outline-none';
+  'w-full rounded-control border border-line bg-canvas px-3.5 py-2.5 text-[0.92rem] text-ink transition-[border-color,box-shadow] placeholder:text-ink-faint focus:border-accent focus:ring-3 focus:ring-accent-wash focus:outline-none';
 const labelClass = 'eyebrow text-ink-faint';
 ---
 
@@ -74,7 +74,7 @@ const labelClass = 'eyebrow text-ink-faint';
               <a
                 href={href}
                 rel="me noopener"
-                class="flex items-center gap-3.5 rounded-(--radius-control) border border-line bg-surface px-4 py-3.5 transition-[border-color,transform] hover:translate-x-0.5 hover:border-accent"
+                class="flex items-center gap-3.5 rounded-control border border-line bg-surface px-4 py-3.5 transition-[border-color,transform] hover:translate-x-0.5 hover:border-accent"
               >
                 <Icon name={`lucide:${icon}`} class="size-4 shrink-0 text-accent" />
                 <span class="text-[0.9rem] font-semibold">{label}</span>
@@ -88,11 +88,14 @@ const labelClass = 'eyebrow text-ink-faint';
       </ul>
     </div>
 
-    {/* ponytail: native form validation only (required + type=email). Wire an
-        action to Formspree or Resend once the delivery backend is chosen. */}
     <form
-      class="reveal rounded-(--radius-card) border border-line bg-surface p-6 shadow-(--shadow-card)"
+      class="reveal rounded-card border border-line bg-surface p-6 shadow-card"
       method="post"
+      action={CONTACT_FORM_ENDPOINT}
+      data-contact-form
+      data-submitting={t('form.submitting')}
+      data-success={t('form.success')}
+      data-error={t('form.error.network')}
     >
       <div class="grid gap-4">
         <div class="grid gap-1.5">
@@ -148,11 +151,20 @@ const labelClass = 'eyebrow text-ink-faint';
 
         <button
           type="submit"
-          class="inline-flex items-center justify-center gap-2 rounded-(--radius-control) bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+          data-submit
+          class="inline-flex items-center justify-center gap-2 rounded-control bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong disabled:opacity-60"
         >
-          {t('form.submit')}
+          <span data-submit-label>{t('form.submit')}</span>
           <Icon name="lucide:send" class="size-4" />
         </button>
+
+        <p
+          data-status
+          role="status"
+          aria-live="polite"
+          class="text-center font-mono text-[0.7rem] empty:hidden data-[state=error]:text-accent data-[state=success]:text-flow"
+        >
+        </p>
 
         <p class="text-center font-mono text-[0.66rem] text-ink-faint">
           {t('form.note')}
@@ -161,6 +173,12 @@ const labelClass = 'eyebrow text-ink-faint';
     </form>
   </div>
 </section>
+
+<script>
+  import { initContactForm } from '../../scripts/contact-form';
+
+  initContactForm();
+</script>
 
 <style>
   .contact-glow {

@@ -28,5 +28,15 @@ export const SOCIAL_LINKS = {
   linkedin: `https://www.linkedin.com/in/${AUTHOR.linkedin}`,
 } as const;
 
+/**
+ * Formspree endpoint the contact form posts to. Messages are delivered to the
+ * inbox the Formspree account was registered with, so no mail credentials
+ * live in this repository.
+ *
+ * Managed at https://formspree.io. The endpoint is a public identifier, not a
+ * secret: it only accepts submissions, and Formspree handles spam filtering.
+ */
+export const CONTACT_FORM_ENDPOINT = 'https://formspree.io/f/xgawrpzv';
+
 /** Year rendered in the footer. */
 export const COPYRIGHT_YEAR = new Date().getFullYear();
