@@ -26,3 +26,6 @@ pnpm-debug.log*
 # local agent/editor instructions (not part of the project)
 CLAUDE.md
 AGENTS.md
+
+# wrangler
+.wrangler/
