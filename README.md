@@ -92,8 +92,9 @@ a directory would work.
 | Output directory | `dist` |
 | Node version | `22` |
 
-Set `PNPM_VERSION` to `9.15.2` in the environment variables so the deploy uses
-the same package manager release as CI.
+Deployment settings live in `wrangler.jsonc` rather than only in the
+dashboard, so pull request previews and production builds agree and the
+configuration is reviewable like any other change.
 
 Pushes to `main` publish to production; pull requests get their own preview
 URL.

@@ -1,0 +1,17 @@
+{
+  // Deployment configuration for Cloudflare Workers.
+  //
+  // Production deploys read their settings from the dashboard, but pull
+  // request previews run `wrangler versions upload`, which only reads this
+  // file. Keeping the config in the repository means both paths agree and
+  // the deployment is reviewable like any other change.
+  //
+  // The site is fully static: there is no Worker script, only the assets
+  // Astro emits into dist/.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "my-portfolio",
+  "compatibility_date": "2026-08-15",
+  "assets": {
+    "directory": "./dist"
+  }
+}
