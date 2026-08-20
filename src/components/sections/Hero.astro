@@ -10,6 +10,12 @@ interface Props {
 const { lang } = Astro.props;
 const t = getTranslations(lang);
 
+const headlineLines = [
+  { text: t('hero.headline.1'), accent: false },
+  { text: t('hero.headline.2'), accent: false },
+  { text: t('hero.headline.3'), accent: true },
+];
+
 const stats = [
   { value: t('hero.stat.1.value'), label: t('hero.stat.1.label') },
   { value: t('hero.stat.2.value'), label: t('hero.stat.2.label') },
@@ -22,65 +28,71 @@ const stats = [
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="grid-backdrop absolute inset-0 -z-10" aria-hidden="true"></div>
 
-  <div class="rail grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
-    <div class="reveal">
-      <p
-        class="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 pr-3.5 pl-2.5 shadow-card"
-      >
-        <span class="size-[7px] shrink-0 rounded-full bg-flow"></span>
-        <span class="eyebrow text-ink-muted">{t('hero.status')}</span>
-      </p>
-
-      <h1
-        class="mt-5 text-[clamp(2.4rem,6.1vw,4.4rem)] tracking-[-0.035em] text-ink"
-      >
-        {t('hero.headline.1')}<br />
-        {t('hero.headline.2')}<br />
-        <span class="text-accent">{t('hero.headline.3')}</span>
-      </h1>
-
-      <p class="mt-6 max-w-[56ch] text-[1.06rem] text-ink-muted">
-        {t('hero.lead')}
-      </p>
-
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a
-          href="#services"
-          class="inline-flex items-center gap-2 rounded-control bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+  <div class="rail">
+    <div class="grid items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
+      <div class="hero-enter">
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-line bg-surface py-1.5 pr-3.5 pl-2.5 shadow-card"
         >
-          {t('hero.cta.primary')}
-          <Icon name="lucide:arrow-right" class="size-4" />
-        </a>
-        <a
-          href="#experience"
-          class="inline-flex items-center rounded-control border border-line bg-surface px-5 py-3 font-semibold text-ink transition-colors hover:border-ink-faint"
+          <span class="size-1.75 shrink-0 rounded-full bg-flow"></span>
+          <span class="eyebrow text-ink-muted">{t('hero.status')}</span>
+        </p>
+
+        <h1
+          class="mt-5 text-[clamp(2.4rem,6.1vw,4.4rem)] tracking-[-0.035em] text-ink"
         >
-          {t('hero.cta.secondary')}
-        </a>
+          {
+            headlineLines.map(({ text, accent }) => (
+              <span class:list={['block', accent && 'text-accent']}>{text}</span>
+            ))
+          }
+        </h1>
+
+        <p class="mt-6 max-w-[56ch] text-[1.06rem] text-ink-muted">
+          {t('hero.lead')}
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href="#services"
+            class="inline-flex items-center gap-2 rounded-control bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+          >
+            {t('hero.cta.primary')}
+            <Icon name="lucide:arrow-right" class="size-4" />
+          </a>
+          <a
+            href="#experience"
+            class="inline-flex items-center rounded-control border border-line bg-surface px-5 py-3 font-semibold text-ink transition-colors hover:border-ink-faint"
+          >
+            {t('hero.cta.secondary')}
+          </a>
+        </div>
       </div>
 
-      <dl
-        class="mt-10 grid gap-px overflow-hidden rounded-control border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
-      >
-        {
-          stats.map(({ value, label }) => (
-            <div class="bg-canvas px-4 py-3.5">
-              <dt class="sr-only">{label}</dt>
-              <dd class="font-display text-[1.28rem] font-bold tracking-tight tabular-nums">
-                {value}
-              </dd>
-              <p class="mt-0.5 font-mono text-[0.63rem] tracking-widest text-ink-faint uppercase">
-                {label}
-              </p>
-            </div>
-          ))
-        }
-      </dl>
+      <div class="hero-aside">
+        <WorkflowDiagram lang={lang} />
+      </div>
     </div>
 
-    <div class="reveal">
-      <WorkflowDiagram lang={lang} />
-    </div>
+    {/* Full rail width. Inside the hero column each cell was narrow enough to
+        break values like "Node · .NET · Angular" across lines. */}
+    <dl
+      class="hero-stats mt-14 grid gap-px overflow-hidden rounded-control border border-line bg-line sm:grid-cols-2 lg:grid-cols-4"
+    >
+      {
+        stats.map(({ value, label }) => (
+          <div class="bg-canvas px-5 py-5">
+            <dt class="sr-only">{label}</dt>
+            <dd class="font-display text-[1.25rem] leading-tight font-bold tracking-tight text-balance text-ink tabular-nums">
+              {value}
+            </dd>
+            <p class="mt-2 font-mono text-[0.64rem] leading-relaxed tracking-[0.12em] text-ink-faint uppercase">
+              {label}
+            </p>
+          </div>
+        ))
+      }
+    </dl>
   </div>
 </section>
 
@@ -101,5 +113,65 @@ const stats = [
         color-mix(in srgb, var(--flow) 14%, transparent),
         transparent 70%
       );
+  }
+
+  /* Load sequence. The hero is above the fold, so it animates on arrival
+     instead of through the scroll observer the rest of the page uses. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-enter > *,
+    .hero-enter h1 > span,
+    .hero-aside,
+    .hero-stats > * {
+      animation: hero-rise 700ms var(--ease-out-soft) backwards;
+    }
+
+    /* The headline arrives line by line, so the h1 itself must not also move. */
+    .hero-enter > h1 {
+      animation: none;
+    }
+
+    .hero-enter > *:nth-child(1) {
+      animation-delay: 80ms;
+    }
+    .hero-enter h1 > span:nth-child(1) {
+      animation-delay: 160ms;
+    }
+    .hero-enter h1 > span:nth-child(2) {
+      animation-delay: 240ms;
+    }
+    .hero-enter h1 > span:nth-child(3) {
+      animation-delay: 320ms;
+    }
+    .hero-enter > *:nth-child(3) {
+      animation-delay: 420ms;
+    }
+    .hero-enter > *:nth-child(4) {
+      animation-delay: 500ms;
+    }
+
+    .hero-aside {
+      animation-duration: 900ms;
+      animation-delay: 380ms;
+    }
+
+    .hero-stats > *:nth-child(1) {
+      animation-delay: 640ms;
+    }
+    .hero-stats > *:nth-child(2) {
+      animation-delay: 700ms;
+    }
+    .hero-stats > *:nth-child(3) {
+      animation-delay: 760ms;
+    }
+    .hero-stats > *:nth-child(4) {
+      animation-delay: 820ms;
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
   }
 </style>
