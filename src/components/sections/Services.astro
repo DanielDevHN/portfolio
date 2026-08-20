@@ -28,7 +28,7 @@ const services = await getServices(lang);
         services.map(({ id, icon, highlight, chips, badge, title, description }) => (
           <li
             class:list={[
-              'reveal group relative flex flex-col gap-3.5 rounded-(--radius-card) border border-line p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-(--shadow-raised)',
+              'reveal group relative flex flex-col gap-3.5 rounded-card border border-line p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-raised',
               highlight ? 'service-card-ai' : 'bg-surface',
             ]}
             data-service={id}
