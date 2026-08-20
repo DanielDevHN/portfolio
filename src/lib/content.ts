@@ -14,7 +14,6 @@ function byOrder<T extends { data: { order: number } }>(a: T, b: T): number {
   return a.data.order - b.data.order;
 }
 
-
 export async function getServices(lang: Lang) {
   const entries = await getCollection('services');
   return entries.sort(byOrder).map(({ id, data }) => ({
