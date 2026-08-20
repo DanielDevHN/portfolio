@@ -1,0 +1,119 @@
+---
+import { getTranslations, type Lang } from '../../i18n/utils';
+import { formatStudyPeriod, getEducation } from '../../lib/content';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const studies = await getEducation(lang);
+
+const spokenLanguages = [
+  {
+    name: t('languages.spanish'),
+    level: t('languages.spanish.level'),
+    fill: 100,
+  },
+  {
+    name: t('languages.english'),
+    level: t('languages.english.level'),
+    fill: 72,
+  },
+];
+
+const softSkills = [
+  t('soft.1'),
+  t('soft.2'),
+  t('soft.3'),
+  t('soft.4'),
+  t('soft.5'),
+];
+---
+
+<section id="education" class="scroll-mt-24 bg-canvas-deep py-20 lg:py-28">
+  <div class="rail">
+    <SectionHeader
+      eyebrow={t('education.eyebrow')}
+      title={t('education.title')}
+      class="mb-12"
+    />
+
+    <div class="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr]">
+      <section
+        class="reveal rounded-(--radius-card) border border-line bg-surface p-6"
+      >
+        <h3 class="eyebrow text-ink-faint">{t('education.panel.studies')}</h3>
+        <ol class="mt-5">
+          {
+            studies.map((study, index) => (
+              <li
+                class:list={[
+                  'py-3.5',
+                  index > 0 && 'border-t border-line-soft',
+                  index === 0 && 'pt-0',
+                ]}
+              >
+                <p
+                  class:list={[
+                    'font-mono text-[0.68rem] tracking-wide',
+                    study.inProgress ? 'text-accent' : 'text-ink-faint',
+                  ]}
+                >
+                  {formatStudyPeriod(study, t('education.inProgress'))}
+                </p>
+                <h4 class="mt-1 text-base tracking-tight text-ink">
+                  {study.degree}
+                </h4>
+                <p class="mt-0.5 text-[0.86rem] text-ink-muted">
+                  {study.institution}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section
+        class="reveal rounded-(--radius-card) border border-line bg-surface p-6"
+      >
+        <h3 class="eyebrow text-ink-faint">{t('education.panel.languages')}</h3>
+        <dl class="mt-5 grid gap-4">
+          {
+            spokenLanguages.map(({ name, level, fill }) => (
+              <div>
+                <div class="flex items-baseline justify-between">
+                  <dt class="text-[0.88rem] text-ink">{name}</dt>
+                  <dd class="font-mono text-[0.68rem] text-ink-faint">
+                    {level}
+                  </dd>
+                </div>
+                <div class="mt-1.5 h-1 overflow-hidden rounded-full bg-surface-muted">
+                  <div class="h-full rounded-full bg-accent" style={`width:${fill}%`} />
+                </div>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section
+        class="reveal rounded-(--radius-card) border border-line bg-surface p-6"
+      >
+        <h3 class="eyebrow text-ink-faint">{t('education.panel.work')}</h3>
+        <ul class="mt-5 grid gap-2.5">
+          {
+            softSkills.map((skill) => (
+              <li class="flex items-center gap-2.5 text-[0.9rem] text-ink-muted">
+                <span class="size-1.5 shrink-0 rounded-full bg-flow" />
+                {skill}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,176 @@
+---
+import { Icon } from 'astro-icon/components';
+import { AUTHOR, SOCIAL_LINKS } from '../../config/site';
+import { getTranslations, type Lang } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+
+const channels = [
+  {
+    icon: 'mail',
+    label: t('contact.link.email'),
+    value: AUTHOR.email,
+    href: SOCIAL_LINKS.email,
+  },
+  {
+    icon: 'message-circle',
+    label: t('contact.link.whatsapp'),
+    value: AUTHOR.phone,
+    href: SOCIAL_LINKS.whatsapp,
+  },
+  {
+    icon: 'github',
+    label: t('contact.link.github'),
+    value: AUTHOR.github,
+    href: SOCIAL_LINKS.github,
+  },
+  {
+    icon: 'linkedin',
+    label: t('contact.link.linkedin'),
+    value: AUTHOR.linkedin,
+    href: SOCIAL_LINKS.linkedin,
+  },
+];
+
+const topics = [
+  t('form.topic.agent'),
+  t('form.topic.rag'),
+  t('form.topic.chatbot'),
+  t('form.topic.app'),
+  t('form.topic.unsure'),
+];
+
+const fieldClass =
+  'w-full rounded-(--radius-control) border border-line bg-canvas px-3.5 py-2.5 text-[0.92rem] text-ink transition-[border-color,box-shadow] placeholder:text-ink-faint focus:border-accent focus:ring-3 focus:ring-accent-wash focus:outline-none';
+const labelClass = 'eyebrow text-ink-faint';
+---
+
+<section id="contact" class="relative scroll-mt-24 overflow-hidden py-20 lg:py-28">
+  <div class="contact-glow" aria-hidden="true"></div>
+
+  <div class="rail grid items-start gap-12 lg:grid-cols-2">
+    <div class="reveal">
+      <p class="eyebrow flex items-center gap-2.5 text-accent">
+        <span class="size-2.5 shrink-0 rounded-full bg-accent"></span>
+        {t('contact.eyebrow')}
+        <span class="h-px w-14 bg-line"></span>
+      </p>
+      <h2
+        class="mt-4 text-[clamp(1.9rem,4.4vw,3rem)] tracking-[-0.03em] text-ink"
+      >
+        {t('contact.title')}
+      </h2>
+      <p class="mt-4 max-w-[46ch] text-ink-muted">{t('contact.lead')}</p>
+
+      <ul class="mt-8 grid gap-2">
+        {
+          channels.map(({ icon, label, value, href }) => (
+            <li>
+              <a
+                href={href}
+                rel="me noopener"
+                class="flex items-center gap-3.5 rounded-(--radius-control) border border-line bg-surface px-4 py-3.5 transition-[border-color,transform] hover:translate-x-0.5 hover:border-accent"
+              >
+                <Icon name={`lucide:${icon}`} class="size-4 shrink-0 text-accent" />
+                <span class="text-[0.9rem] font-semibold">{label}</span>
+                <span class="ml-auto font-mono text-[0.74rem] text-ink-muted">
+                  {value}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    {/* ponytail: native form validation only (required + type=email). Wire an
+        action to Formspree or Resend once the delivery backend is chosen. */}
+    <form
+      class="reveal rounded-(--radius-card) border border-line bg-surface p-6 shadow-(--shadow-card)"
+      method="post"
+    >
+      <div class="grid gap-4">
+        <div class="grid gap-1.5">
+          <label class={labelClass} for="contact-name">
+            {t('form.name.label')}
+          </label>
+          <input
+            class={fieldClass}
+            id="contact-name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder={t('form.name.placeholder')}
+          />
+        </div>
+
+        <div class="grid gap-1.5">
+          <label class={labelClass} for="contact-email">
+            {t('form.email.label')}
+          </label>
+          <input
+            class={fieldClass}
+            id="contact-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder={t('form.email.placeholder')}
+          />
+        </div>
+
+        <div class="grid gap-1.5">
+          <label class={labelClass} for="contact-topic">
+            {t('form.topic.label')}
+          </label>
+          <select class={fieldClass} id="contact-topic" name="topic">
+            {topics.map((topic) => <option value={topic}>{topic}</option>)}
+          </select>
+        </div>
+
+        <div class="grid gap-1.5">
+          <label class={labelClass} for="contact-message">
+            {t('form.message.label')}
+          </label>
+          <textarea
+            class:list={[fieldClass, 'min-h-26 resize-y']}
+            id="contact-message"
+            name="message"
+            required
+            placeholder={t('form.message.placeholder')}></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center gap-2 rounded-(--radius-control) bg-accent px-5 py-3 font-semibold text-on-accent transition-colors hover:bg-accent-strong"
+        >
+          {t('form.submit')}
+          <Icon name="lucide:send" class="size-4" />
+        </button>
+
+        <p class="text-center font-mono text-[0.66rem] text-ink-faint">
+          {t('form.note')}
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -10;
+    background: radial-gradient(
+      50% 70% at 50% 0%,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 70%
+    );
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import { getTranslations, type Lang } from '../../i18n/utils';
+import { formatPeriod, getExperience } from '../../lib/content';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const roles = await getExperience(lang);
+---
+
+<section id="experience" class="scroll-mt-24 py-20 lg:py-28">
+  <div class="rail">
+    <SectionHeader
+      eyebrow={t('experience.eyebrow')}
+      title={t('experience.title')}
+      class="mb-10"
+    />
+
+    <ol class="border-b border-line">
+      {
+        roles.map(
+          ({ id, company, role, startYear, endYear, current, bullets }) => (
+            <li
+              class="reveal grid gap-3 border-t border-line py-8 md:grid-cols-[200px_1fr] md:gap-10"
+              data-role={id}
+            >
+              <div class="flex items-center gap-3">
+                <span
+                  class:list={[
+                    'size-2.5 shrink-0 rounded-full border-2',
+                    current
+                      ? 'border-accent bg-accent'
+                      : 'border-line bg-canvas',
+                  ]}
+                  aria-hidden="true"
+                />
+                <p
+                  class:list={[
+                    'font-mono text-[0.74rem] tracking-wide',
+                    current ? 'text-accent' : 'text-ink-faint',
+                  ]}
+                >
+                  {formatPeriod(startYear, endYear, t('experience.present'))}
+                </p>
+              </div>
+
+              <div>
+                <h3 class="text-[1.22rem] tracking-tight text-ink">
+                  {company}
+                </h3>
+                <p class="mt-1 font-mono text-[0.72rem] tracking-widest text-accent uppercase">
+                  {role}
+                </p>
+                <ul class="mt-4 grid gap-2.5">
+                  {bullets.map((bullet) => (
+                    <li class="flex gap-3 text-[0.93rem] text-ink-muted">
+                      <span
+                        class="mt-[0.62em] h-px w-2 shrink-0 bg-accent opacity-70"
+                        aria-hidden="true"
+                      />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ),
+        )
+      }
+    </ol>
+  </div>
+</section>

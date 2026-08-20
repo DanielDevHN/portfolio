@@ -1,0 +1,254 @@
+---
+import { getTranslations, type Lang } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+
+// Layout is fixed in viewBox units and scales with the container, so the
+// diagram stays readable from 320px up without a second implementation.
+const nodes = [
+  {
+    x: 20,
+    y: 24,
+    w: 210,
+    label: t('workflow.node.trigger.label'),
+    title: t('workflow.node.trigger.title'),
+    glyph: 'M42 44l10-10v7h8l-10 10v-7z',
+    hot: false,
+  },
+  {
+    x: 308,
+    y: 24,
+    w: 230,
+    label: t('workflow.node.agent.label'),
+    title: t('workflow.node.agent.title'),
+    glyph: 'M330 41h12v12h-12z M336 35v6 M336 53v6 M324 47h6 M342 47h6',
+    hot: true,
+  },
+  {
+    x: 20,
+    y: 178,
+    w: 210,
+    label: t('workflow.node.embeddings.label'),
+    title: t('workflow.node.embeddings.title'),
+    glyph: 'M47 196v-6 M40 200h6 M54 200h-6',
+    hot: false,
+  },
+  {
+    x: 308,
+    y: 178,
+    w: 230,
+    label: t('workflow.node.vector.label'),
+    title: t('workflow.node.vector.title'),
+    glyph:
+      'M328 196c0-3 5-5 11-5s11 2 11 5-5 5-11 5-11-2-11-5z M328 196v14c0 3 5 5 11 5s11-2 11-5v-14',
+    hot: false,
+  },
+  {
+    x: 308,
+    y: 332,
+    w: 230,
+    label: t('workflow.node.output.label'),
+    title: t('workflow.node.output.title'),
+    glyph: 'M328 358h16 M338 352l6 6-6 6',
+    hot: false,
+  },
+];
+
+const edges = ['M230 60H308', 'M423 96V178', 'M230 214H308', 'M423 250V332'];
+
+const ports: Array<[number, number, boolean]> = [
+  [230, 60, false],
+  [308, 60, false],
+  [423, 96, true],
+  [423, 178, true],
+  [230, 214, false],
+  [308, 214, false],
+  [423, 250, true],
+  [423, 332, true],
+];
+---
+
+<figure
+  class="overflow-hidden rounded-(--radius-card) border border-line bg-surface shadow-(--shadow-raised)"
+>
+  <figcaption
+    class="flex items-center gap-2.5 border-b border-line-soft bg-surface-muted px-3.5 py-3"
+  >
+    <span class="flex gap-1.5" aria-hidden="true">
+      <span class="size-2.5 rounded-full bg-accent opacity-70"></span>
+      <span class="size-2.5 rounded-full bg-line"></span>
+      <span class="size-2.5 rounded-full bg-line"></span>
+    </span>
+    <span class="font-mono text-[0.68rem] text-ink-faint"
+      >{t('workflow.file')}</span
+    >
+    <span
+      class="ml-auto font-mono text-[0.6rem] font-bold tracking-widest text-flow uppercase"
+      >{t('workflow.live')}</span
+    >
+  </figcaption>
+
+  <div class="dotted-canvas p-4">
+    <svg
+      viewBox="0 0 558 388"
+      class="block h-auto w-full"
+      role="img"
+      aria-label={t('a11y.workflowDiagram')}
+    >
+      {
+        edges.map((d) => (
+          <Fragment>
+            <path d={d} class="edge" />
+            <path d={d} class="edge-pulse" />
+          </Fragment>
+        ))
+      }
+
+      {
+        ports.map(([cx, cy, hot]) => (
+          <circle cx={cx} cy={cy} r="4.5" class={hot ? 'port-hot' : 'port'} />
+        ))
+      }
+
+      {
+        nodes.map(({ x, y, w, label, title, glyph, hot }) => (
+          <Fragment>
+            <rect
+              x={x}
+              y={y}
+              width={w}
+              height="64"
+              rx="11"
+              class={hot ? 'node node-hot' : 'node'}
+            />
+            <path d={glyph} class={hot ? 'glyph glyph-hot' : 'glyph'} />
+            <text x={x + 46} y={y + 19} class="node-label">
+              {label.toUpperCase()}
+            </text>
+            <text x={x + 46} y={y + 38} class="node-title">
+              {title}
+            </text>
+            {hot && (
+              <Fragment>
+                <rect
+                  x={x + w - 42}
+                  y={y + 10}
+                  width="30"
+                  height="15"
+                  rx="7.5"
+                  class="badge"
+                />
+                <text x={x + w - 27} y={y + 21} class="badge-label">
+                  {t('workflow.badge')}
+                </text>
+              </Fragment>
+            )}
+          </Fragment>
+        ))
+      }
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .dotted-canvas {
+    background-image: radial-gradient(var(--line-soft) 1.1px, transparent 1.1px);
+    background-size: 16px 16px;
+  }
+
+  .edge {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.6;
+  }
+
+  /* A short dash travelling the full path length reads as data in motion. */
+  .edge-pulse {
+    fill: none;
+    stroke: var(--flow);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 6 118;
+    animation: flow 3.6s linear infinite;
+  }
+
+  .edge-pulse:nth-of-type(4) {
+    animation-delay: 0.5s;
+  }
+  .edge-pulse:nth-of-type(6) {
+    animation-delay: 1.1s;
+  }
+  .edge-pulse:nth-of-type(8) {
+    animation-delay: 1.7s;
+  }
+
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -248;
+    }
+  }
+
+  .node {
+    fill: var(--node);
+    stroke: var(--line);
+    stroke-width: 1.2;
+  }
+
+  .node-hot {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+
+  .port {
+    fill: var(--surface);
+    stroke: var(--ink-faint);
+    stroke-width: 1.2;
+  }
+
+  .port-hot {
+    fill: var(--accent);
+  }
+
+  .glyph {
+    fill: none;
+    stroke: var(--flow);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  .glyph-hot {
+    stroke: var(--accent);
+  }
+
+  .node-label {
+    fill: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 8.4px;
+    letter-spacing: 1.1px;
+  }
+
+  .node-title {
+    fill: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  .badge {
+    fill: var(--accent);
+  }
+
+  .badge-label {
+    fill: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 7.6px;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    text-anchor: middle;
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getTranslations, type Lang } from '../../i18n/utils';
+import { getServices } from '../../lib/content';
+import Chip from '../ui/Chip.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const services = await getServices(lang);
+---
+
+<section id="services" class="scroll-mt-24 py-20 lg:py-28">
+  <div class="rail">
+    <SectionHeader
+      eyebrow={t('services.eyebrow')}
+      title={t('services.title')}
+      lead={t('services.lead')}
+      class="mb-12"
+    />
+
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        services.map(({ id, icon, highlight, chips, badge, title, description }) => (
+          <li
+            class:list={[
+              'reveal group relative flex flex-col gap-3.5 rounded-(--radius-card) border border-line p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-(--shadow-raised)',
+              highlight ? 'service-card-ai' : 'bg-surface',
+            ]}
+            data-service={id}
+          >
+            {/* Input and output ports, echoing the workflow nodes. */}
+            <span
+              class="absolute -top-px left-1/2 h-[5px] w-6 -translate-x-1/2 rounded-b bg-line transition-colors group-hover:bg-accent"
+              aria-hidden="true"
+            />
+            <span
+              class="absolute -bottom-px left-1/2 h-[5px] w-6 -translate-x-1/2 rounded-t bg-line transition-colors group-hover:bg-accent"
+              aria-hidden="true"
+            />
+
+            <div class="flex items-center">
+              <span
+                class:list={[
+                  'grid size-10.5 place-items-center rounded-xl border bg-canvas text-accent',
+                  highlight ? 'border-accent' : 'border-line',
+                ]}
+              >
+                <Icon name={`lucide:${icon}`} class="size-5" />
+              </span>
+              {badge && (
+                <span class="ml-auto rounded-full border border-accent px-1.5 py-0.5 font-mono text-[0.58rem] font-bold tracking-widest text-accent">
+                  {badge}
+                </span>
+              )}
+            </div>
+
+            <h3 class="text-[1.1rem] tracking-tight text-ink">{title}</h3>
+            <p class="flex-1 text-[0.9rem] text-ink-muted">{description}</p>
+
+            <div class="flex flex-wrap gap-1.5">
+              {chips.map((chip) => (
+                <Chip highlight={highlight}>{chip}</Chip>
+              ))}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .service-card-ai {
+    background-image: linear-gradient(
+      168deg,
+      var(--accent-wash),
+      transparent 46%
+    );
+    background-color: var(--surface);
+  }
+</style>

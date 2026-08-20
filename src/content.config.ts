@@ -10,11 +10,11 @@ import { file } from 'astro/loaders';
  * forgotten in English: the schema requires both, so the build fails first.
  */
 
-/** Wraps a per-language shape so every entry must ship both translations. */
-function localized<T extends Parameters<typeof z.object>[0]>(shape: T) {
-  const translation = z.object(shape);
-  return { es: translation, en: translation };
-}
+const serviceText = z.object({
+  badge: z.string().optional(),
+  title: z.string(),
+  description: z.string(),
+});
 
 const services = defineCollection({
   loader: file('src/content/services.yaml'),
@@ -26,12 +26,14 @@ const services = defineCollection({
     highlight: z.boolean().default(false),
     /** Technology tags. Product names, so they are not translated. */
     chips: z.array(z.string()).min(1).max(4),
-    ...localized({
-      badge: z.string().optional(),
-      title: z.string(),
-      description: z.string(),
-    }),
+    es: serviceText,
+    en: serviceText,
   }),
+});
+
+const experienceText = z.object({
+  role: z.string(),
+  bullets: z.array(z.string()).min(1),
 });
 
 const experience = defineCollection({
@@ -43,11 +45,16 @@ const experience = defineCollection({
     /** Omitted while the role is ongoing. */
     endYear: z.number().int().optional(),
     current: z.boolean().default(false),
-    ...localized({
-      role: z.string(),
-      bullets: z.array(z.string()).min(1),
-    }),
+    es: experienceText,
+    en: experienceText,
   }),
+});
+
+const caseStudyText = z.object({
+  title: z.string(),
+  description: z.string(),
+  /** Stack line under the divider. */
+  tech: z.string(),
 });
 
 const caseStudies = defineCollection({
@@ -56,13 +63,14 @@ const caseStudies = defineCollection({
     order: z.number().int().positive(),
     icon: z.string(),
     organization: z.string(),
-    ...localized({
-      title: z.string(),
-      description: z.string(),
-      /** Stack line under the divider. */
-      tech: z.string(),
-    }),
+    es: caseStudyText,
+    en: caseStudyText,
   }),
+});
+
+const educationText = z.object({
+  degree: z.string(),
+  institution: z.string(),
 });
 
 const education = defineCollection({
@@ -74,10 +82,8 @@ const education = defineCollection({
       endYear: z.number().int(),
       /** Renders as "In progress · <endYear>" instead of a year range. */
       inProgress: z.boolean().default(false),
-      ...localized({
-        degree: z.string(),
-        institution: z.string(),
-      }),
+      es: educationText,
+      en: educationText,
     })
     .refine((entry) => entry.inProgress || entry.startYear !== undefined, {
       message: 'Completed studies must declare a startYear',
