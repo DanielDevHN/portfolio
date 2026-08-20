@@ -1,0 +1,38 @@
+---
+import { AUTHOR, COPYRIGHT_YEAR } from '../../config/site';
+import { getTranslations, type Lang } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+
+const links = [
+  { href: '#services', label: t('nav.services') },
+  { href: '#experience', label: t('nav.experience') },
+  { href: '#cases', label: t('nav.cases') },
+  { href: '#contact', label: t('nav.contact') },
+];
+---
+
+<footer class="border-t border-line bg-canvas-deep py-8">
+  <div class="rail flex flex-wrap items-center justify-between gap-4">
+    <p class="font-mono text-[0.7rem] tracking-wide text-ink-faint">
+      © {COPYRIGHT_YEAR} {AUTHOR.name} · {AUTHOR.location}
+    </p>
+    <nav class="flex flex-wrap gap-5">
+      {
+        links.map(({ href, label }) => (
+          <a
+            href={href}
+            class="text-[0.82rem] text-ink-muted transition-colors hover:text-accent"
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</footer>
