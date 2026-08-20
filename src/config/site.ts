@@ -5,7 +5,10 @@
  * and long-form content lives in `src/content`.
  */
 
-/** Canonical origin. Update this before the first production deploy. */
+/**
+ * Canonical origin. Canonical URLs, hreflang alternates and the sitemap are
+ * all generated from it, so it must match the deployed domain exactly.
+ */
 export const SITE_URL = 'https://danielreyes.dev';
 
 export const AUTHOR = {
