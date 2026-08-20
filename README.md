@@ -1,43 +1,91 @@
-# Astro Starter Kit: Minimal
+# Daniel Reyes — Portfolio
 
-```sh
-pnpm create astro@latest -- --template minimal
+Personal portfolio and services site. Bilingual (Spanish / English), light and
+dark themes, static output.
+
+Built with [Astro](https://astro.build), TypeScript and Tailwind CSS v4.
+React is used only where a component genuinely needs client state; everything
+else ships as HTML with no JavaScript.
+
+## Requirements
+
+- Node.js >= 22.12
+- pnpm 9
+
+## Getting started
+
+```bash
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Scripts
 
-## 🚀 Project Structure
+| Script | What it does |
+| --- | --- |
+| `pnpm dev` | Dev server at `localhost:4321` |
+| `pnpm build` | Static build into `dist/` |
+| `pnpm preview` | Serve the built output locally |
+| `pnpm lint` | Biome lint and format check |
+| `pnpm lint:fix` | Apply Biome fixes |
+| `pnpm typecheck` | `astro check` |
+| `pnpm verify` | lint + typecheck + build — run this before pushing |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+src/
+├── config/site.ts        Identity, contact channels, canonical URL
+├── content/*.yaml        Editorial content, validated by Zod
+├── content.config.ts     Collection schemas
+├── data/stack.ts         Technology grid
+├── i18n/                 UI dictionary and locale helpers
+├── layouts/              Document shell, SEO, fonts
+├── components/           Sections and UI pieces
+├── scripts/              Theme toggle, scroll reveal
+└── styles/global.css     Design tokens and Tailwind theme
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Updating content
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Most changes are content, not code.
 
-Any static assets, like images, can be placed in the `public/` directory.
+- **Services, experience, case studies, education** — edit the matching file in
+  `src/content/`. Each entry holds its Spanish and English text side by side,
+  so a translation cannot be forgotten: the schema requires both and the build
+  fails if one is missing.
+- **Interface copy** (navigation, buttons, form labels) — `src/i18n/ui.ts`.
+  Spanish is the source of truth; TypeScript fails the build when English is
+  missing a key.
+- **Technology grid** — `src/data/stack.ts`.
+- **Contact details and canonical URL** — `src/config/site.ts`.
 
-## 🧞 Commands
+## Internationalisation
 
-All commands are run from the root of the project, from a terminal:
+Spanish is served from `/` and English from `/en/`. Both are real, indexable
+routes with their own canonical URL, `hreflang` alternates and sitemap entries,
+so each language can rank on its own.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## Theming
 
-## 👀 Want to learn more?
+Every colour is defined once per theme under the same token name in
+`src/styles/global.css`, and exposed as Tailwind utilities. Components
+reference tokens only, so switching themes touches no component.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The visitor's choice is stored in `localStorage` and applied by an inline
+script before the first paint, so an explicit dark theme never flashes white.
+With no stored choice the operating system preference wins.
+
+## Deployment
+
+Static output — any host that serves a directory works. `SITE_URL` in
+`src/config/site.ts` must match the production domain before the first deploy,
+since canonical URLs, `hreflang` and the sitemap are generated from it.
+
+```bash
+pnpm build   # -> dist/
+```
+
+## Licence
+
+MIT — see [LICENSE](LICENSE).
