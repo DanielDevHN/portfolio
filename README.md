@@ -79,9 +79,35 @@ before the first paint, so a chosen theme never flashes the other one.
 
 ## Deployment
 
-Static output — any host that serves a directory works. `SITE_URL` in
-`src/config/site.ts` must match the production domain before the first deploy,
-since canonical URLs, `hreflang` and the sitemap are generated from it.
+Deployed to [Cloudflare Pages](https://pages.cloudflare.com) at
+<https://danielreyes.dev>. The build is fully static, so any host that serves
+a directory would work.
+
+### Build settings
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | Astro |
+| Build command | `pnpm build` |
+| Output directory | `dist` |
+| Node version | `22` |
+
+Set `PNPM_VERSION` to `9.15.2` in the environment variables so the deploy uses
+the same package manager release as CI.
+
+Pushes to `main` publish to production; pull requests get their own preview
+URL.
+
+### Domain
+
+The domain is registered with name.com. To serve it from Cloudflare, point
+name.com's nameservers at the pair Cloudflare assigns when the site is added,
+then attach `danielreyes.dev` and `www.danielreyes.dev` as custom domains in
+the Pages project. Certificates are issued automatically.
+
+`SITE_URL` in `src/config/site.ts` must match the deployed domain, since
+canonical URLs, `hreflang` alternates and the sitemap are all generated from
+it.
 
 ```bash
 pnpm build   # -> dist/
