@@ -1,23 +1,14 @@
 /**
  * Theme switching.
  *
- * The stored choice is applied by an inline script in the document head so
- * there is no flash before the first paint. This module only handles the
- * toggle itself and keeps the button label in sync.
+ * Dark is the default and needs no stamp; choosing light stamps
+ * data-theme="light" on <html>. The stored choice is re-applied by an inline
+ * script in the document head, so there is no flash before the first paint.
  */
 
 const STORAGE_KEY = 'theme';
 
 type Theme = 'light' | 'dark';
-
-function readStored(): Theme | null {
-  try {
-    const value = localStorage.getItem(STORAGE_KEY);
-    return value === 'dark' || value === 'light' ? value : null;
-  } catch {
-    return null;
-  }
-}
 
 function persist(theme: Theme): void {
   try {
@@ -27,13 +18,9 @@ function persist(theme: Theme): void {
   }
 }
 
-/** The theme actually rendering right now, stamped or inherited from the OS. */
+/** The theme rendering right now. Dark is the default, light is opt-in. */
 export function effectiveTheme(): Theme {
-  const stamped = document.documentElement.dataset.theme;
-  if (stamped === 'dark' || stamped === 'light') return stamped;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light';
+  return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
 }
 
 export function initThemeToggle(): void {
@@ -49,11 +36,4 @@ export function initThemeToggle(): void {
       persist(next);
     });
   }
-
-  // Follow the operating system while the visitor has made no explicit choice.
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', () => {
-      if (readStored() === null) delete document.documentElement.dataset.theme;
-    });
 }

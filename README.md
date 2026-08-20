@@ -72,9 +72,10 @@ Every colour is defined once per theme under the same token name in
 `src/styles/global.css`, and exposed as Tailwind utilities. Components
 reference tokens only, so switching themes touches no component.
 
-The visitor's choice is stored in `localStorage` and applied by an inline
-script before the first paint, so an explicit dark theme never flashes white.
-With no stored choice the operating system preference wins.
+The design is dark-first: every visitor gets the dark theme, and light is
+opt-in through the toggle rather than inherited from the operating system.
+The choice is stored in `localStorage` and re-applied by an inline script
+before the first paint, so a chosen theme never flashes the other one.
 
 ## Deployment
 
