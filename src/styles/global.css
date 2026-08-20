@@ -6,13 +6,33 @@
    Every colour exists under one name in both themes. Components only ever
    reference the token, so switching themes touches no component.
 
-   Three viewer states are covered:
-     1. no stamp on <html>  -> prefers-color-scheme decides
-     2. data-theme="dark"   -> explicit dark, beats a light OS
-     3. data-theme="light"  -> explicit light, beats a dark OS
+   The design is dark-first: dark is what every visitor gets, regardless of
+   their operating system, and light is opt-in through the toggle. The choice
+   is stamped on <html> as data-theme and remembered in localStorage.
    ========================================================================== */
 
 :root {
+  --canvas: #0c111b;
+  --canvas-deep: #080c14;
+  --surface: #131a28;
+  --surface-muted: #1a2333;
+  --node: #151d2c;
+  --line: #273245;
+  --line-soft: #1f2939;
+  --ink: #e9edf4;
+  --ink-muted: #9aa7bb;
+  --ink-faint: #6c7a90;
+  --accent: #ff7a3d;
+  --accent-strong: #ff9257;
+  --accent-wash: #ff7a3d1f;
+  --flow: #46d6cb;
+  --flow-wash: #46d6cb1f;
+  --on-accent: #ffffff;
+  --shadow-card: 0 1px 2px #00000066, 0 12px 32px -12px #00000099;
+  --shadow-raised: 0 2px 4px #00000080, 0 32px 64px -24px #000000bf;
+}
+
+:root[data-theme='light'] {
   --canvas: #f0f2f6;
   --canvas-deep: #e4e9f1;
   --surface: #ffffff;
@@ -31,48 +51,6 @@
   --on-accent: #ffffff;
   --shadow-card: 0 1px 2px #131a260d, 0 12px 32px -12px #131a2629;
   --shadow-raised: 0 2px 4px #131a2610, 0 32px 64px -24px #131a2638;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --canvas: #0c111b;
-    --canvas-deep: #080c14;
-    --surface: #131a28;
-    --surface-muted: #1a2333;
-    --node: #151d2c;
-    --line: #273245;
-    --line-soft: #1f2939;
-    --ink: #e9edf4;
-    --ink-muted: #9aa7bb;
-    --ink-faint: #6c7a90;
-    --accent: #ff7a3d;
-    --accent-strong: #ff9257;
-    --accent-wash: #ff7a3d1f;
-    --flow: #46d6cb;
-    --flow-wash: #46d6cb1f;
-    --shadow-card: 0 1px 2px #00000066, 0 12px 32px -12px #00000099;
-    --shadow-raised: 0 2px 4px #00000080, 0 32px 64px -24px #000000bf;
-  }
-}
-
-:root[data-theme='dark'] {
-  --canvas: #0c111b;
-  --canvas-deep: #080c14;
-  --surface: #131a28;
-  --surface-muted: #1a2333;
-  --node: #151d2c;
-  --line: #273245;
-  --line-soft: #1f2939;
-  --ink: #e9edf4;
-  --ink-muted: #9aa7bb;
-  --ink-faint: #6c7a90;
-  --accent: #ff7a3d;
-  --accent-strong: #ff9257;
-  --accent-wash: #ff7a3d1f;
-  --flow: #46d6cb;
-  --flow-wash: #46d6cb1f;
-  --shadow-card: 0 1px 2px #00000066, 0 12px 32px -12px #00000099;
-  --shadow-raised: 0 2px 4px #00000080, 0 32px 64px -24px #000000bf;
 }
 
 /* ==========================================================================
